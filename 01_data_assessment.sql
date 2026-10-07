@@ -5,9 +5,10 @@
 --Author: Hejran 
 
 
---1. Check data volume and count missing (NULL) values across all columns
+--1. Check data volume and count missing (NULL) values across all columns 
+-- فحص اجمالي البيانات والقيم المفقودة 
 
-SELECT TOP 1 * FROM transactions
+
 
 SELECT 
       COUNT(*) AS total_rows,
@@ -28,8 +29,9 @@ SELECT
 FROM transactions;
 
 --2. Diagnose NULL distribution across Fraud vs NON-Fraud transactions
-
+-- معرفة اذا القيم الفارغة تقع ضمن العمليات الاحتيالية ام السليمة
 SELECT 
+      isFraud,
       COUNT(*) AS total_records,
       SUM(CASE WHEN amount IS NULL THEN 1 ELSE 0 END) AS null_amount,
       SUM(CASE WHEN oldbalanceOrg IS NULL THEN 1 ELSE 0 END) AS null_olsdbalanceOrg,
@@ -38,9 +40,40 @@ SELECT
 FROM transactions
 GROUP BY isFraud; 
 
---3. Fraud and NULL values
+--3. Isolate fraud transactions containing NULL values accross any financial balance column
+-- عزل حالات الاحتيال التي تحتوي القيم المفقودة في اي من الاعمدة المالية 
 
-SELECT *FROM transactions
-WHERE isFraud = 1 AND amount is NULL;
+SELECT * FROM transactions
+WHERE isFraud = 1
+AND (amount is NULL 
+     OR oldbalanceOrg IS NULL 
+     OR oldbalanceDest IS NULL);
+
+--4. Check for negative balances / amount and zero-values transactions 
+-- فحص وجود قيم سالبة او مبالغ مالية تساوي صفر في الاعمدة المالية 
+
+SELECT 
+     COUNT(*) AS total_rows,
+     SUM(CASE WHeN amount < 0 THEN 1 ELSE 0 END) AS negative_amount,
+     SUM(CASE WHEN amount = 0 THEN 1 ELSE 0 END) AS zero_amount,
+
+     SUM(CASE WHEN oldbalanceOrg < 0 THEN 1 ELSE 0 END) AS negative_oldbalanceOrg,
+     SUM(CASE WHEN newbalanceOrig < 0 THEN 1 ELSE 0 END) AS negative_newbalanceOrig,
+
+     SUM(CASE WHEN oldbalanceDest < 0 THEN 1 ELSE 0 END) AS negative_oldbalanceDest,
+     SUM(CASE WHEN newbalanceDest < 0 THEN 1 ELSE 0 END) AS negative_newbalanceDest
+FROM transactions;
+
+--5. Check for fully duplicated records across transactions 
+-- فحص سجلات مكررة متكاملة عبر جميع المعاملات 
+
+
+SELECT 
+     step, type, amount, nameOrig,nameDest, isFraud,
+     COUNT(*) AS occurrence_count
+FROM transactions
+GROUP BY 
+       step, type, amount, nameOrig, nameDest, isFraud
+HAVING COUNT(*) > 1;
 
 
