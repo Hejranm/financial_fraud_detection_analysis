@@ -1,4 +1,3 @@
-
 --Project: Fraud Detection Analysis
 --file: 01_data_assessment.sql
 --Objective: Initial sanity ckecks and null diagnostics
