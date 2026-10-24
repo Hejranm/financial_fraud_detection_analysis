@@ -28,7 +28,7 @@ INTO cleaned_transactions
 FROM transactions;
  
 --2. Add and calculate 'is_account_emptied' flag (Drain Account Indication) 
--- الهدف: المساعدة في كشف الاحتيال ورصد السلوك المشبوه فورا من خلال فحص فاتورة العميل قبل التحويل وبعج التحويل 
+-- الهدف: المساعدة في كشف الاحتيال ورصد السلوك المشبوه فورا من خلال فحص فاتورة العميل قبل وبعد التحويل 
 
 ALTER TABLE cleaned_transactions
 ADD is_account_emptied INT;
