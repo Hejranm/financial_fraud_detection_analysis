@@ -33,12 +33,12 @@ SELECT
       SUM(CASE WHEN amount IS NULL THEN 1 ELSE 0 END) AS null_amount,
 
       SUM(CASE WHEN nameOrig IS NULL THEN 1 ELSE 0 END) AS null_nameOrig,
-      SUM(CASE WHEN oldbalanceOrg IS NULL THEN 1 ELSE 0 END) AS null_olsdbalanceOrg,
-      SUM(CASE WHEN newbalanceOrig IS NULL THEN 1 ELSE 0 END) AS null_newdbalanceOrig,
+      SUM(CASE WHEN oldbalanceOrg IS NULL THEN 1 ELSE 0 END) AS null_oldbalanceOrg,
+      SUM(CASE WHEN newbalanceOrig IS NULL THEN 1 ELSE 0 END) AS null_newbalanceOrig,
 
       SUM(CASE WHEN nameDest IS NULL THEN 1 ELSE 0 END) AS null_nameDest,
-      SUM(CASE WHEN oldbalanceDest IS NULL THEN 1 ELSE 0 END) AS null_olsdbalanceDEST,
-      SUM(CASE WHEN newbalanceDest IS NULL THEN 1 ELSE 0 END) AS null_newdbalanceDest,
+      SUM(CASE WHEN oldbalanceDest IS NULL THEN 1 ELSE 0 END) AS null_oldbalanceDEST,
+      SUM(CASE WHEN newbalanceDest IS NULL THEN 1 ELSE 0 END) AS null_newbalanceDest,
 
       SUM(CASE WHEN isFraud IS NULL THEN 1 ELSE 0 END) AS null_isFraud,
       SUM(CASE WHEN isFlaggedFraud IS NULL THEN 1 ELSE 0 END) AS null_isFlaggedFraud
@@ -105,6 +105,7 @@ HAVING COUNT(*) > 1;
 
 --9. Primary Key & Identity Column Audit
 -- الهدف: التحقق من وجود مفتاح اساسي او معرف فريد للجدول
+
 
 SELECT 
      K.TABLE_NAME,
