@@ -4,20 +4,31 @@
 --=========================================================================
 
 --1. Fraud Overview: Total transaction volume, fraud count, and overall fraud rate
+-- الهدف: معرفة المجموع الكلي لعمليات الاحتيال مقابل العمليات السليمة مع نسبة كل منهما
 
 SELECT
       COUNT(*) AS total_transactions,
-      SUM(CASE WHEN isFraud = 1 THEN 1 ELSE 0 END) AS fraud_transactions,
-      ROUND(CAST(SUM(CASE WHEN isFraud = 1 then 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*), 4) AS fraud_percentage
+      SUM(CASE WHEN isFraud = 1 THEN 1 ELSE 0 END) AS total_fraud_transactions,
+      SUM(CASE WHEN isFraud = 0 THEN 1 ELSE 0 END) AS total_legit_transactions,
+      ROUND(CAST(SUM(CASE WHEN isFraud = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*), 4) AS fraud_percentage,
+      ROUND(CAST(SUM(CASE WHEN isFraud = 0 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*), 4) AS legit_precentage
 FROM cleaned_transactions;
+
 
 --2. Financial Impact: Total financial loss and average amount comperison
+-- الهدف: حساب المجموع الكلي والمتوسط لمبالغ عمليات الاحتيال والعمليات السليمة مع حساب نسبة الخسائر المالية 
 
-SELECT
-      FORMAT(SUM(CASE WHEN isFraud = 1 THEN amount ELSE 0 END), 'N2') AS total_fraud_loss,
-      FORMAT(AVG(CASE WHEN isFraud = 1 THEN amount ELSE NULL END), 'N2') AS avg_fraud_amount,
-      FORMAT(AVG(CASE WHEN isFraud = 0 THEN amount ELSE NULL END), 'N2') AS avg_normal_amount
+SELECT 
+    FORMAT(SUM(amount), 'N2') AS total_monetary_volume,
+    FORMAT(SUM(CASE WHEN isFraud = 1 THEN amount ELSE 0 END), 'N2') AS total_fraud_loss,
+    FORMAT(SUM(CASE WHEN isFraud = 0 THEN amount ELSE 0 END), 'N2') AS total_legit_volume,
+    FORMAT(AVG(CASE WHEN isFraud = 1 THEN amount ELSE NULL END), 'N2') AS avg_fraud_amount,
+    FORMAT(AVG(CASE WHEN isFraud = 0 THEN amount ELSE NULL END), 'N2') AS avg_normal_amount,
+    ROUND(SUM(CASE WHEN isFraud = 1 THEN amount ELSE 0 END) * 100.0 / SUM(amount), 
+        2) AS fraud_loss_percentage
 FROM cleaned_transactions;
+
+
 
 --3. Fraud Breakdown by Transactions Type: Identifying vulnerable channels
 
@@ -26,12 +37,28 @@ SELECT
      COUNT(*) AS total_transactions,
      SUM(CASE WHEN isFraud = 1 THEN 1 ELSE 0 END) AS fraud_transactions,
      FORMAT(SUM(CASE WHEN isFraud =1 THEN amount ELSE 0 END), 'N2') AS total_fraud_loss,
-     ROUND(CAST(SUM(CASE WHEN isFraud = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*), 4) AS fraud_rate_precentage
+     ROUND(CAST(SUM(CASE WHEN isFraud = 1 THEN 1 ELSE 0 END) AS FLOAT) * 100 / COUNT(*), 4) AS fraud_rate_precentage,
+     ROUND(CAST(SUM(CASE WHEN isFraud = 1 THEN amount ELSE 0 END) AS FLOAT) * 100 / NULLIF(SUM(amount), 0),2)
+     AS fraud_amount_precentage
 FROM cleaned_transactions
 GROUP BY type
 ORDER BY fraud_transactions DESC;
 
---4. Behavior Analysis: Impact of drained account (Zero-Balance Anomaly)
+--4. Transaction Value Comparison (Fraud vs Legitimate)
+-- الهدف:مقارنة المقاييس المالية (العدد، المتوسط، وأقل وأعلى مبلغ) بين العمليات الاحتيالية والسليمة لتحديد الأنماط السلوكية والشذوذ في القيم
+
+SELECT 
+    CASE WHEN isFraud = 1 THEN 'Fraudulent' ELSE 'Legitimate' 
+    END AS transaction_nature,
+    COUNT(*) AS transaction_count,
+    ROUND(AVG(amount), 2) AS average_amount,
+    MIN(amount) AS min_amount,
+    MAX(amount) AS max_amount
+FROM cleaned_transactions
+GROUP BY isFraud;
+
+--5. Behavior Analysis: Impact of drained account (Zero-Balance Anomaly)
+-- قياس مدى ارتباط تصفير الحسابات بحدوث الاحتيالي 
 
 SELECT
       is_account_emptied,
@@ -41,7 +68,8 @@ SELECT
 FROM cleaned_transactions
 GROUP BY is_account_emptied;
 
---5. Legacy Detection System Benchmark: Evaluating rule-basced alerts
+--6. Legacy Detection System Benchmark: Evaluating rule-basced alerts
+-- تقييم كفاءة قاعدة النظام عبر النتبيهات الصادرة بحالات الفعلية لكشف حالات الاحتيال التي افلتت من النظام 
 
 SELECT 
       SUM(CASE WHEN isFraud = 1 THEN 1 ELSE 0 END) AS actual_fraud_cases,
