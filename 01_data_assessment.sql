@@ -103,9 +103,9 @@ GROUP BY
        nameDest,oldbalanceDest, newbalanceDest,isFraud, isFlaggedFraud
 HAVING COUNT(*) > 1;
 
+
 --9. Primary Key & Identity Column Audit
 -- الهدف: التحقق من وجود مفتاح اساسي او معرف فريد للجدول
-
 
 SELECT 
      K.TABLE_NAME,
