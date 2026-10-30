@@ -77,3 +77,15 @@ SELECT
       SUM(CASE WHEN isFraud = 1 AND isFlaggedFraud = 1 THEN 1 ELSE 0 END) AS correctly_flagged,
       SUM(CASE WHEN isFraud = 1 AND isFlaggedFraud = 0 THEN 1 ELSE 0 END) AS missed_fraud
 FROM cleaned_transactions;
+
+--7. Unlabeled Fraud Detection (Balance Discrepancy Anomaly)
+-- الهدف: كشف المعاملات المصنفة كسليمة ولكنها تحتوي على خلل حسابي في الارصدة مما يشير الى احتمالية وجود احتيال غير مكتشف 
+
+SELECT 
+      COUNT(*) AS suspicious_unlabeled_transactions,
+      FORMAT(SUM(amount), 'N2') AS total_suspicious_volume,
+      FORMAT(AVG(amount),'N2') AS avg_suspicious_amount
+FROM cleaned_transactions
+WHERE isFraud = 0
+AND orig_balance_error != 0.00
+AND TYPE IN ('TRANSFER', 'CASH_OUT');
