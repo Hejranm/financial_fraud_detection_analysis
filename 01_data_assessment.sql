@@ -12,7 +12,8 @@ SELECT COUNT(*) AS total_records FROM transactions;
 
 SELECT COUNT(*) AS total_columns
 FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_NAME = 'transactions';
+WHERE TABLE_NAME = 'transactions'
+AND TABLE_SCHEMA = 'dbo';
 
 --3. Inspect Column Metadata & data type 
 
@@ -81,8 +82,19 @@ FROM transactions
       MAX(LEN(namedest)) AS max_len_dest,
 
 
-      COUNT(CASE WHEN nameOrig NOT LIKE 'C%' AND nameOrig NOT LIKE 'M%' THEN 1 END) AS invalid_nameOrig_prefix,
-      COUNT(CASE WHEN nameDest NOT LIKE 'C%' AND nameDest NOT LIKE 'M%' THEN 1 END) AS invalid_nameDest_prefix,
+      COUNT(CASE
+            WHEN nameOrig IS NOT NULL
+            AND nameOrig NOT LIKE 'C%'
+            AND nameOrig NOT LIKE 'M%'
+            THEN 1 
+            END) AS invalid_nameOrig_prefix,
+
+      COUNT(CASE
+            WHEN nameDest IS NOT NULL
+            AND nameDest NOT LIKE 'C%'
+            AND nameDest NOT LIKE 'M%'
+            THEN 1 
+            END) AS invalid_nameDest_prefix,
 
 
       COUNT(CASE WHEN TRIM(type) = '' THEN 1 END) AS empty_type,
@@ -99,7 +111,7 @@ SELECT
      COUNT(*) AS occurrence_count
 FROM transactions
 GROUP BY 
-       step, type, amount, nameOrig, nameDest, oldbalanceOrg, newbalanceOrig,
+       step, type, amount, nameOrig, oldbalanceOrg, newbalanceOrig,
        nameDest,oldbalanceDest, newbalanceDest,isFraud, isFlaggedFraud
 HAVING COUNT(*) > 1;
 
