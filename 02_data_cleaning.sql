@@ -112,6 +112,6 @@ ADD orig_balance_error DECIMAL(18,2) DEFAULT 0.00,
 GO
 UPDATE cleaned_transactions
 SET orig_balance_error =(oldbalanceOrg - amount) - newbalanceOrig,
-    dest_balance_error =(oldbalanceDest - amount) - newbalanceDest;
+    dest_balance_error =(oldbalanceDest + amount) - newbalanceDest;
 GO
 
