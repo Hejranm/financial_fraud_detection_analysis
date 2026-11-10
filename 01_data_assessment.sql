@@ -45,7 +45,7 @@ SELECT
       SUM(CASE WHEN isFlaggedFraud IS NULL THEN 1 ELSE 0 END) AS null_isFlaggedFraud
 FROM transactions;
 
---3. Comprehensive Numerical Range & Outlier Detection across All Numeric Columns
+--5. Comprehensive Numerical Range & Outlier Detection across All Numeric Columns
 -- الهدف: تدقيق شامل لكافة الاعمدة الرقمية (القيم الصغرى, العظمى, والمتوسطة) لمعرفة الحدود الزمنية ورصد الارقام والمبالغ الشاذة والسالبة 
 
 SELECT 
@@ -72,7 +72,7 @@ SELECT
       MAX(CAST(isFlaggedFraud AS INT)) AS max_isFlaggedFraud
 FROM transactions
 
---7. Text Colums Audit (Lengths, Patterns, and Blank Checks)
+--6. Text Colums Audit (Lengths, Patterns, and Blank Checks)
 -- الهدف : فحص وتدقيق الاعمدة النصية منها فحص اطوال النصوص,البادئات المصرفية, ورصد الفراغات المخفية
 
  SELECT
@@ -102,7 +102,7 @@ FROM transactions
       COUNT(CASE WHEN TRIM(nameDest) = '' THEN 1 END) AS empty_nameDest
 FROM transactions;
 
---8. Check for fully duplicated records across transactions 
+--7. Check for fully duplicated records across transactions 
 -- فحص وجود سجلات مكررة بالكامل عبر جميع الاعمدة 
 
 SELECT 
@@ -116,7 +116,7 @@ GROUP BY
 HAVING COUNT(*) > 1;
 
 
---9. Primary Key & Identity Column Audit
+--8. Primary Key & Identity Column Audit
 -- الهدف: التحقق من وجود مفتاح اساسي او معرف فريد للجدول
 
 SELECT 
