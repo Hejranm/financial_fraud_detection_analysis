@@ -79,12 +79,12 @@ Examined the overall transaction volume and compared fraudulent transactions wit
 Evaluated the financial impact of fraudulent transactions by comparing transaction amounts, averages, and total monetary values.
 
 **Key Findings:**
-- Total transaction value: **36,142,233,373.33**
-- Total value of fraudulent transactions: **73,476,299.82**
-- Total value of legitimate transactions: **36,068,757,073.51**
-- Average fraudulent transaction amount: **499,838.77**
-- Average legitimate transaction amount: **180,476.44**
-- Fraudulent transaction value as a percentage of total transaction value: **0.20%**
+- Total transaction value: **36,142,233,373.33$**
+- Total value of fraudulent transactions: **73,476,299.82$**
+- Total value of legitimate transactions: **36,068,757,073.51$**
+- Average fraudulent transaction amount: **499,838.77$**
+- Average legitimate transaction amount: **180,476.44$**
+- Fraudulent transaction value as a percentage of total transaction value: **0.20%$**
 
 **Insight:** The average fraudulent transaction amount was approximately 2.77 times higher than the average legitimate transaction amount.
 
