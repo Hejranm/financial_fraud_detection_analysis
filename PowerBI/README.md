@@ -12,3 +12,14 @@ This folder contains the Power BI dashboard for the Financial Fraud Detection An
 3. Open the downloaded file using Power BI Desktop.
 
 Note: This dashboard is shared for visualization and analytical exploration.
+
+
+## Dashboard Preview
+
+### Page 1 – Overview
+
+![Dashboard Overview](Dashboard_Overview.png)
+
+### Page 2 – Fraud Analysis
+
+![Fraud Analysis](Fraud_analysis.png)
