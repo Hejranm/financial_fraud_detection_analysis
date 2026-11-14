@@ -1,5 +1,5 @@
 Power BI Dashboard files will be uploaded here.
-## Power BI Dashboard
+## Power BI Dashboard 📊
 
 This folder contains the Power BI dashboard for the Financial Fraud Detection Analysis project.
 
