@@ -185,34 +185,6 @@ Through this project, I applied analytical techniques to:
 
 The findings highlight the importance of data-driven analysis in understanding financial fraud patterns and identifying potentially suspicious activities.
 
-## How to Run the SQL Scripts
-
-The SQL scripts were developed using Microsoft SQL Server (T-SQL).
-
-To execute the scripts and reproduce the analysis, follow these steps:
-
-### Prerequisites
-- Microsoft SQL Server.
-- SQL Server Management Studio (SSMS).
-- The project dataset.
-
-### Execution Steps
-
-1. Install Microsoft SQL Server and SQL Server Management Studio (SSMS).
-2. Download the project dataset and import it into SQL Server.
-3. Open the SQL scripts in SQL Server Management Studio.
-4. Select the database containing the project data.
-5. Execute the SQL scripts in the following order:
-   - Data Exploration
-   - Data Cleaning
-   - Exploratory Data Analysis (EDA)
-6. Review the query results in the Results tab.
-
-**Important Notes:**
-- The scripts are written in T-SQL and are intended to run in Microsoft SQL Server.
-- The data cleaning script must be executed before the EDA script, as the analysis queries depend on the `cleaned_transactions` table.
-- Make sure the database and table names match those referenced in the SQL scripts.
-
 ## Author
 
 **Hejran Mohammed**
