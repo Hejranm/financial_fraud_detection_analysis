@@ -11,4 +11,4 @@ This folder contains the Power BI dashboard for the Financial Fraud Detection An
 2. Install Microsoft Power BI Desktop.
 3. Open the downloaded file using Power BI Desktop.
 
-**Note:** The dashboard file is provided for exploration and further analysis.
+Note: This dashboard is shared for visualization and analytical exploration.
